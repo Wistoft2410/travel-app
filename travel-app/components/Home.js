@@ -12,7 +12,7 @@ import learnMoreData from '../travel-app/assets/data/learnMoreData'
 
 
 
-export default function App() {
+const Home = ( {navigation} ) => {
   return (
     <View style={styles.container}>
       <ScrollView>
@@ -29,10 +29,13 @@ export default function App() {
           </View>
         </SafeAreaView>
         {/* Discover */}
+        
       </ScrollView>
     </View>
   );
 }
+
+export default Home; 
 
 const styles = StyleSheet.create({
   container: {
