@@ -18,6 +18,7 @@ import { TouchableOpacity } from 'react-native';
 import profile from '../travel-app/assets/images/person.png';
 import discoverData from './assets/data/discoverData';
 import activitiesData from './assets/data/activitiesData'; // Ensure this is correctly imported
+import learnMoreData from './assets/data/learnMoreData';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -74,6 +75,14 @@ const Home = ({ navigation }) => {
     );
   };
 
+  const renderLearnMoreItem = ({item}) => {
+    return(
+      <View>
+        <Text>{item.title}</Text>
+      </View>
+    )
+  }
+
   return (
     <View style={styles.container}>
       <ScrollView>
@@ -128,12 +137,18 @@ const Home = ({ navigation }) => {
           </View>
         </View>
 
-        {/* Content */}
-        <View style={styles.buttonContainer}>
-          <Button
-            onPress={() => navigation.navigate('Details')}
-            title="Click me!"
-          />
+        {/* Learn More Section */}
+        <View style={styles.learnMoreWrapper}>
+          <Text style={styles.learnMoreTitle}>Learn More</Text>
+          <View style={styles.learnMoreItemsWrapper}>
+            <FlatList
+              data={learnMoreData}
+              renderItem={renderLearnMoreItem}
+              keyExtractor={(item) => item.id.toString()}
+              horizontal
+              showsHorizontalScrollIndicator={false}
+            />
+          </View>
         </View>
       </ScrollView>
     </View>
@@ -350,5 +365,17 @@ const styles = StyleSheet.create({
     fontFamily: 'Helvetica',
     fontSize: 14, 
     color: colors.gray,
+  },
+  learnMoreWrapper: {
+    marginTop: 10, 
+  },
+  learnMoreTitle: {
+    marginHorizontal: 20, 
+    fontFamily: 'Helvetica',
+    fontSize: 24, 
+    fontWeight: 'bold',
+  },
+  learnMoreItemsWrapper: {
+
   },
 });
