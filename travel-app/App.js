@@ -1,17 +1,29 @@
 import React from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, Button, ScrollView, SafeAreaView, Image, ImageBackground, FlatList } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Button,
+  ScrollView,
+  SafeAreaView,
+  Image,
+  ImageBackground,
+  FlatList,
+} from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
+import Entypo from 'react-native-vector-icons/Entypo';
+import { TouchableOpacity } from 'react-native';
+
 import profile from '../travel-app/assets/images/person.png';
 import discoverData from './assets/data/discoverData';
+import activitiesData from './assets/data/activitiesData'; // Ensure this is correctly imported
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
-import Entypo from 'react-native-vector-icons/Entypo';
 import colors from '../travel-app/assets/colors/colors';
-import { TouchableOpacity } from 'react-native';
 
 Entypo.loadFont();
 
@@ -23,24 +35,42 @@ const Home = ({ navigation }) => {
   // Function to render each discover item
   const renderDiscoverDiscoverItem = ({ item }) => {
     return (
-      <TouchableOpacity onPress={() => navigation.navigate('Details',{
-        item: item,
-      })}>
+      <TouchableOpacity
+        onPress={() =>
+          navigation.navigate('Details', {
+            item: item,
+          })
+        }
+      >
         <ImageBackground
           source={item.image}
           style={[
             styles.discoverItem,
-            {marginLeft: item.id === 'discover-1' ? 20 : 0},
+            { marginLeft: item.id === 'discover-1' ? 20 : 0 },
           ]}
           imageStyle={styles.discoverItemImage}
         >
           <Text style={styles.discoverItemTitle}>{item.title}</Text>
           <View style={styles.discoverItemLocationWrapper}>
-            <Entypo name='location-pin' size={18} color={colors.white} />
-            <Text style={styles.discoverItemLocationText}>{item.location}</Text>
+            <Entypo name="location-pin" size={18} color={colors.white} />
+            <Text style={styles.discoverItemLocationText}>
+              {item.location}
+            </Text>
           </View>
         </ImageBackground>
       </TouchableOpacity>
+    );
+  };
+
+  // Function to render each activity item
+  const renderActivityItem = ({ item }) => {
+    return (
+      <View style={[styles.activityItemWrapper, {
+        marginLeft: item.id === 'activities-1' ? 20 : 0
+      }]}>
+        <Image source={item.image} style={styles.activityItemImage} />
+        <Text style={styles.activityItemText}>{item.title}</Text>
+      </View>
     );
   };
 
@@ -64,7 +94,9 @@ const Home = ({ navigation }) => {
         <View style={styles.discoverWrapper}>
           <Text style={styles.discoverTitle}>Discover</Text>
           <View style={styles.discoverCategoriesWrapper}>
-            <Text style={[styles.discoverCategoryText, { color: colors.orange }]}>
+            <Text
+              style={[styles.discoverCategoryText, { color: colors.orange }]}
+            >
               All
             </Text>
             <Text style={styles.discoverCategoryText}>Destinations</Text>
@@ -75,7 +107,21 @@ const Home = ({ navigation }) => {
             <FlatList
               data={discoverData}
               renderItem={renderDiscoverDiscoverItem}
-              keyExtractor={(item) => item.id.toString()} // Corrected keyExtractor
+              keyExtractor={(item) => item.id.toString()}
+              horizontal
+              showsHorizontalScrollIndicator={false}
+            />
+          </View>
+        </View>
+
+        {/* Activities Section */}
+        <View style={styles.activitiesWrapper}>
+          <Text style={styles.activitiesTitle}>Activities</Text>
+          <View style={styles.activitiesItemsWrapper}>
+            <FlatList
+              data={activitiesData}
+              renderItem={renderActivityItem}
+              keyExtractor={(item) => item.id.toString()}
               horizontal
               showsHorizontalScrollIndicator={false}
             />
@@ -158,8 +204,12 @@ const App = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen name="TabNavigator" component={TabNavigator} options={{ headerShown: false }}/>
-        <Stack.Screen name="Details" component={Details}/>
+        <Stack.Screen
+          name="TabNavigator"
+          component={TabNavigator}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen name="Details" component={Details} />
       </Stack.Navigator>
       <StatusBar style="auto" />
     </NavigationContainer>
@@ -188,7 +238,7 @@ const styles = StyleSheet.create({
   },
   menuWrapper: {
     marginHorizontal: 20,
-    marginTop: 20, 
+    marginTop: 20,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -201,7 +251,7 @@ const styles = StyleSheet.create({
     height: 52,
     borderRadius: 10,
   },
-  buttonContainer: { // This is for the 'Click me!' button 
+  buttonContainer: {
     alignItems: 'center',
     marginTop: 20, // Adjusted to prevent overlapping with FlatList
     marginBottom: 20,
@@ -222,12 +272,12 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
   },
   discoverCategoryText: {
-    marginRight: 30, 
+    marginRight: 30,
     fontFamily: 'Helvetica',
-    fontSize: 16, 
+    fontSize: 16,
     color: colors.gray,
   },
-  discoverItemsWrapper: { // Ensure this style is defined
+  discoverItemsWrapper: {
     paddingVertical: 20,
   },
   discoverItem: {
@@ -237,7 +287,6 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
     paddingHorizontal: 10,
     paddingVertical: 15,
-
     overflow: 'hidden',
     backgroundColor: colors.gray, // Optional: fallback color
     borderRadius: 20,
@@ -259,5 +308,47 @@ const styles = StyleSheet.create({
     color: colors.white,
     fontSize: 14,
     marginLeft: 5,
+  },
+  activitiesWrapper: {
+    marginTop: 10,
+  },
+  activitiesTitle: {
+    marginHorizontal: 20,
+    fontFamily: 'Helvetica',
+    fontWeight: 'bold',
+    fontSize: 24,
+    marginBottom: 10,
+  },
+  activitiesItemsWrapper: {
+    paddingVertical: 20,
+  },
+  activityItem: {
+    width: 150, // Adjust as needed
+    height: 150,
+    backgroundColor: colors.lightGray, // Define in colors
+    borderRadius: 15,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 15,
+  },
+  activityTitle: {
+    fontSize: 16,
+    fontFamily: 'Helvetica',
+    color: colors.black, // Define in colors
+    textAlign: 'center',
+  },
+  activityItemWrapper: {
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    marginRight: 20,
+  },
+  activityItemImage: {
+    width: 36,
+  },
+  activityItemText: {
+    marginTop: 5, 
+    fontFamily: 'Helvetica',
+    fontSize: 14, 
+    color: colors.gray,
   },
 });
