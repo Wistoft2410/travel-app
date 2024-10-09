@@ -259,7 +259,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
     borderTopWidth: 0,
     elevation: 5,
-    height: 60,
+    height: 100,
   },
   menuWrapper: {
     marginHorizontal: 20,
