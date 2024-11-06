@@ -25,6 +25,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import colors from '../travel-app/assets/colors/colors';
+import Details from './components/Details';
 
 Entypo.loadFont();
 
@@ -177,12 +178,6 @@ const Profile = () => (
   </View>
 );
 
-const Details = () => (
-  <View style={styles.container}>
-    <Text style={styles.textColor}>Details Screen</Text>
-  </View>
-);
-
 const TabNavigator = () => {
   return (
     <Tab.Navigator
@@ -234,7 +229,11 @@ const App = () => {
           component={TabNavigator}
           options={{ headerShown: false }}
         />
-        <Stack.Screen name="Details" component={Details} />
+        <Stack.Screen 
+          name="Details" 
+          component={Details} 
+          options={{ headerShown: false }}
+        />
       </Stack.Navigator>
       <StatusBar style="auto" />
     </NavigationContainer>
